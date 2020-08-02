@@ -50,7 +50,7 @@ const PersonForm = (props) => {
         }
 
         let [ match ]  = nameExists(newName)
-        match = (match === undefined ? '' : match)
+        match = (!match ? '' : match)
 
         if(match.number === newNumber) {
             alert(`${newName} already added`)
