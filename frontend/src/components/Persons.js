@@ -5,6 +5,7 @@ const Persons = (props) => {
     const [error, setError] = useState(null)
 
     const persons = props.persons
+    const setPersons = props.setPersons
     const newSearch = props.newSearch
     const search = () => {
         return (
@@ -19,11 +20,8 @@ const Persons = (props) => {
             service.deleteEntry(person.id)
                 .then(response => {
                     //creates copy of array before and after element
-                    props.setPersons(
-                        ...persons.slice(0, person.id)
-                        .concat(...persons.slice(person.id + 1)
-                        )
-                    )
+                    props.setPersons(persons.filter(p => p.id !== person.id))
+                    console.log(persons)
                 })
                 .catch(err => {
                     setError(`${person.name} was already removed`)
