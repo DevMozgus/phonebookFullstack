@@ -20,8 +20,10 @@ const Persons = (props) => {
                 .then(response => {
                     //creates copy of array before and after element
                     props.setPersons(
-                        persons.slice(0, person.id)
-                        .concat(persons.slice(person.id + 1)))
+                        ...persons.slice(0, person.id)
+                        .concat(...persons.slice(person.id + 1)
+                        )
+                    )
                 })
                 .catch(err => {
                     setError(`${person.name} was already removed`)
