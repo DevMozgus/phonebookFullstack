@@ -18,7 +18,7 @@ const Persons = (props) => {
         if(window.confirm(`Delete ${person.name}?`))
             service.deleteEntry(person.id)
                 .then(response => {
-                    props.setPersons(service.getAll())
+                    props.setPersons(persons.slice(person.id))
                 })
                 .catch(err => {
                     setError(`${person.name} was already removed`)
