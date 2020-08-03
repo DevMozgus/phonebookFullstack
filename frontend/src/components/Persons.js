@@ -18,7 +18,10 @@ const Persons = (props) => {
         if(window.confirm(`Delete ${person.name}?`))
             service.deleteEntry(person.id)
                 .then(response => {
-                    props.setPersons(persons.slice(person.id))
+                    //creates copy of array before and after element
+                    props.setPersons(
+                        persons.slice(0, person.id)
+                        .concat(persons.slice(person.id + 1)))
                 })
                 .catch(err => {
                     setError(`${person.name} was already removed`)
