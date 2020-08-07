@@ -74,7 +74,7 @@ const PersonForm = (props) => {
     }
 
     return (
-        <>
+        <>  
         <h2>Add Person</h2>
         <form onSubmit={handleNewPerson} >
           <div>

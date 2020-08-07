@@ -21,7 +21,6 @@ const Persons = (props) => {
                 .then(response => {
                     //creates copy of array before and after element
                     props.setPersons(persons.filter(p => p.id !== person.id))
-                    console.log(persons)
                 })
                 .catch(err => {
                     setError(`${person.name} was already removed`)
