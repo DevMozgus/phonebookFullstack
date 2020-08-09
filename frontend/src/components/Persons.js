@@ -34,13 +34,13 @@ const Persons = (props) => {
 
     return (
         <>
-        <Notification message={error} />
         {search().map(person => 
             <>
             <Numbers key={person.number} name={person.name} number={person.number} />
             <button key={person.id} onClick={() => handleDelete(person)} >delete</button>
             </>
             )}
+        <Notification message={error} />
         </>
     )
 }

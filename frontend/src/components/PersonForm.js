@@ -9,6 +9,7 @@ const PersonForm = (props) => {
     const setNewName = props.setNewName
     const newNumber = props.newNumber
     const setNewNumber = props.setNewNumber
+    const [error, setError ] = useState(null)
 
 
     const nameExists = (input) => {
@@ -25,6 +26,13 @@ const PersonForm = (props) => {
             .then(response => {
                 setPersons(persons.concat(response))
             })
+            .catch(err => {
+                setError(JSON.stringify(err.response.data))
+                console.log(err)
+                setTimeout(() => { 
+                    setError(null)
+                }, 5000)
+            })
         
         setNewName('')
         setNewNumber('')
@@ -35,6 +43,12 @@ const PersonForm = (props) => {
             .then(response => {
                 setPersons(persons.map(person => person.id !== id ? person : response
                 ))
+            })
+            .catch(err => {
+                setError(JSON.stringify(err.response.data))
+                setTimeout(() => { 
+                    setError(null)
+                }, 5000)
             })
         setNewName('')
         setNewNumber('')
@@ -75,6 +89,7 @@ const PersonForm = (props) => {
 
     return (
         <>  
+        <Notification message={error} />
         <h2>Add Person</h2>
         <form onSubmit={handleNewPerson} >
           <div>
@@ -92,6 +107,17 @@ const PersonForm = (props) => {
           </div>
         </form>
         </>
+    )
+}
+
+const Notification = ({ message }) => {
+    if (message === null) 
+        return null
+
+    return (
+        <div className="error" >
+            {message}
+        </div>
     )
 }
 

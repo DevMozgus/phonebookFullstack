@@ -6,12 +6,14 @@ const app = express();
 const cors = require('cors');
 const Person = require('./models/person');
 const mongoose = require('mongoose');
+const uniqueValidator = require('mongoose-unique-validator');
 
 app.use(express.static('build'));
 app.use(cors());
 app.use(express.json());
 
 mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
 
 /* morgan.token('yeet', (req, res) => {
   console.log(req.body)
