@@ -6,7 +6,6 @@ const app = express();
 const cors = require('cors');
 const Person = require('./models/person');
 const mongoose = require('mongoose');
-const uniqueValidator = require('mongoose-unique-validator');
 
 app.use(express.static('build'));
 app.use(cors());
@@ -15,30 +14,30 @@ app.use(express.json());
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 
-/* morgan.token('yeet', (req, res) => {
-  console.log(req.body)
-  return req.body
+/* morgan.token('yeet', (request, response) => {
+  console.log(request.body)
+  return request.body
 })
 
 app.use(morgan('tiny'))
 
-app.use(morgan(':yeet :req[content-body]')) */
+app.use(morgan(':yeet :request[content-body]')) */
 
-app.get('/', (req, res) => {
-	res.send('<h1>Hello to my test site</h1>');
+app.get('/', (request, response) => {
+	response.send('<h1>Hello to my test site</h1>');
 });
 
-app.get('/api/persons', (req, res) => {
+app.get('/api/persons', (request, response) => {
 	Person.find({}).then((entry) => {
-		res.json(entry);
+		response.json(entry);
 	});
 });
 
-app.post('/api/persons', (req, res, next) => {
-	const body = req.body;
+app.post('/api/persons', (request, response, next) => {
+	const body = request.body;
 
 	if (!body.name || !body.number) {
-		return res.status(400).json({ error: 'content missing' });
+		return response.status(400).json({ error: 'content missing' });
 	}
 
 	const person = new Person({
@@ -49,16 +48,16 @@ app.post('/api/persons', (req, res, next) => {
 	person
 		.save()
 		.then((savedPerson) => savedPerson.toJSON())
-		.then((formattedPerson) => res.json(formattedPerson))
+		.then((formattedPerson) => response.json(formattedPerson))
 		.catch((err) => next(err));
 });
 
-app.get('/info', (req, res) => {
+app.get('/info', (request, response) => {
 	const timestamp = new Date();
 	const utcDate = timestamp.toUTCString();
 
 	Person.estimatedDocumentCount().then((result) => {
-		res.send(`
+		response.send(`
 		<p>Phonebook has info for ${result} people.</p>
 		<p>${utcDate}</p>
   	`);
@@ -92,9 +91,9 @@ app.put('/api/persons/:id', (request, response, next) => {
 		.catch((err) => next(err));
 });
 
-app.delete('/api/persons/:id', (request, response) => {
+app.delete('/api/persons/:id', (request, response, next) => {
 	Person.findByIdAndRemove(request.params.id)
-		.then((result) => {
+		.then(() => {
 			response.status(204).end();
 		})
 		.catch((err) => next(err));
